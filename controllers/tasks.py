@@ -29,7 +29,7 @@ class ProcessReminders(webapp2.RequestHandler):
             for reminder in reminders:
                 reminder_template_values = {
                    'reminder':reminder,
-                   'reminder_url':self.request.host_url + "/reminders" + reminder.key().id_or_name(),
+                   'reminder_url':self.request.host_url + "/reminders/" + reminder.key().id_or_name(),
                 }
                 email_body = reminder_template.render(reminder_template_values)
                 

@@ -11,10 +11,11 @@ class MainPage(webapp2.RequestHandler):
         user = users.get_current_user()
 
         if user:
-            if(user.email() in ACTIVE_USER_EMAILS):
+            if(user.email() in ACTIVE_USER_EMAILS or users.is_current_user_admin()):
                 template_values = {
-                                   'page':{'title':"Accounts"},
+                                   'page':{'title':"3 Idiots Flat"},
                                    'user':user,
+                                   'active_tab':"home",
                                    'logout_url': users.create_logout_url("/"),
                 }
                 template = JINJA_ENVIRONMENT.get_template('base.html')
