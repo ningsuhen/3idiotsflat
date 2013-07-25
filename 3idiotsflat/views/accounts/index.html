@@ -1,0 +1,131 @@
+{% extends "base.html" %} {% if reloadPage %}
+<script>
+  location.href = location.href
+</script>
+{% endif %} {% block content %}
+
+<div class="row-fluid">
+	<div class="span7">
+
+		<form action="?" method="POST" id="accounts_form" class="form-horizontal">
+			<fieldset>
+				<legend>Create New Record</legend>
+				<input type="hidden" name="cmd" value="add_new" /> {% if error_message %}
+				<div class="alert  alert-error">{{ error_message }}</div>
+				{% endif %}
+
+				<div class="control-group">
+					<label class="control-label" for="amount">Amount</label>
+					<div class="controls">
+						<input type="text" name="amount" placeholder="Enter Amount Here e.g. 120" value="{{ amount }}">
+					</div>
+				</div>
+
+				<div class="control-group">
+					<label class="control-label" for="description">Description</label>
+					<div class="controls">
+						<input type="text" name="description" placeholder="Enter Description of Expenditure" value="{{ description }}">
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="expenseby">Expense By</label>
+					<div class="controls">
+						<select name="expenseby">
+							<option value="">Choose</option> {% for email in user_emails %} {% set name = users[email] %}
+							<option value="{{ email }}" {% if user.email() ==email%}selected{%endif%}>{{ name }}</option> {% endfor %}
+						</select>
+					</div>
+				</div>
+
+				<div class="control-group">
+					<label class="control-label">Shared By</label>
+					<div class="controls">
+						<table class="sharedby-table">
+							<tr>
+								<td><label for="all"><input type="checkbox" id="all" name="all" {% if all== 1 %} checked {% endif %} /> All</label></td> {% for email in user_emails %} {% set name = users[email] %}
+								<td><label for="{{ email }}"><input type="checkbox" id="{{ email }}" name="{{ email }}" {% if usedby[email] == 1 %} checked {% endif %} /> {{ name }} </label></td>{% endfor %}
+							</tr>
+						</table>
+					</div>
+				</div>
+
+				<div class="control-group">
+					<div class="controls">
+						<input type="submit" class="btn" value="Submit" />
+					</div>
+				</div>
+			</fieldset>
+		</form>
+
+	</div>
+	<div class="span4 offset1">
+
+		<form action="?" class="form-horizontal">
+			<label>Select Month: </label> <select name="month"> {% for month in available_months %} {% set selected ="" %} {% if month == month %} {% set selected = "selected" %} {% endif%}
+				<option value="{{ month.expensemonth.strftime('%Y-%m-%d') }}"{{ selected }}>{{ month.expensemonth.strftime('%B %Y') }}</option> {% endfor %}
+			</select> &nbsp; <input type="submit" class="btn" value="Go" />
+		</form>
+	</div>
+</div>
+
+<div class="row-fluid">
+	<h3>Existing Records</h3>
+	<table class="table table-bordered table-condensed accounts_table">
+		<thead>
+			<tr>
+				<th>Date</th>
+				<th>Description</th>
+				<th>Amount</th>
+				<th>Expense By</th> {% for email in user_emails %} {% set name = users[email] %}
+				<th>{{ name }}</th> {% endfor %}
+				<th>Mark for delete</th>
+			</tr>
+		</thead>
+		<tbody>
+			<!-- code here -->
+			{% for expense in expenses %}
+			<tr class="{% if expense.deleted %}info{% else %}success{% endif %}">
+				<td class="large">{{ expense.expensedate.strftime("%Y-%m-%d") }}</td>
+				<td class="large">{{ expense.expensefor }}</td>
+				<td class="large">{{ expense.expenseamount }}</td>
+				<td class="large">{{ users[expense.expenseby.email()] }}</td> {% for email in user_emails %}
+				<td>{% if expense[email] %}{{ expense[email] }} {% else %}0{% endif %}</td> {% endfor %}
+				<td>{% if not expense.deleted %} <a href="?month={{ month }}&cmd=delete&eid={{ expense.key().id_or_name() }}">Delete</a> {% else %} <b class="deleted">Deleted</b> {% endif %}
+				</td>
+			</tr>
+			{% endfor %}
+			<tr class="total">
+				<td class="large">Total</td>
+				<td class="large">&nbsp;{{ calculation_error }}</td>
+				<td class="large">{{ totals.amount }} &nbsp;</td>
+				<td class="large">&nbsp;</td> {% for email in user_emails %}
+				<td>{% if totals.useramounts[email] %}{{ totals.useramounts[email] }} {% else %}0{% endif %} &nbsp;</td> {% endfor %}
+				<td>&nbsp;</td>
+			</tr>
+
+		</tbody>
+	</table>
+	
+	<div class="span5">
+		<h4>Adjustments</h4>
+		<table class="table table-condensed table-bordered accounts_table">
+			<thead>
+				<tr>
+					<th>Payer to Receiver</th>
+					<th>Amount</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for paymentUser, paymentTarget in paymentMap.iteritems() %}
+				<tr>
+					<td class="large">{{ users[paymentUser] }} &rarr; {{ users[paymentTarget[0]] }}&nbsp;</td>
+					<td class="large">Rs. {{ paymentTarget[1] }} /-&nbsp;</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+</div>
+
+
+{% endblock %}

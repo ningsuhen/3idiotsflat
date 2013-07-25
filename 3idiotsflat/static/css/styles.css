@@ -1,0 +1,34 @@
+table.sharedby-table td {
+	padding: 5px;
+}
+
+table.sharedby-table td label {
+	line-height: 20px;
+	border: 1px solid #dedede;
+	padding: 0 5px;
+	border-radius: 5px;
+}
+
+table.sharedby-table td label:hover {
+	background: #ddd;
+}
+
+table.sharedby-table td label input {
+	margin: 0px;
+}
+.deleted {
+	color: gray;
+}
+
+
+/***********************************/
+
+.accounts_table thead {
+	background: brown;
+	color: #fff;
+}
+
+.deleted {
+	background: gray;
+	color: gray;
+}
