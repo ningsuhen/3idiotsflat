@@ -14,7 +14,7 @@
 				<div class="control-group">
 					<label class="control-label" for="amount">Select Snooze</label>
 					<div class="controls">
-						<select name="month">
+						<select name="snooze">
 							<option value="0"></option>
 							<option value="1">1 Day</option>
 							<option value="2">2 Days</option>
@@ -33,7 +33,7 @@
 
 				<div class="control-group">
 					<div class="controls">
-						<input type="submit" class="btn" value="Mark Completed" /> &nbsp; <input type="submit" class="btn" value="Snooze" />
+						<input type="submit" class="btn" name="do" value="Mark Completed" /> &nbsp; <input type="submit" name="do" class="btn" value="Snooze" />
 					</div>
 
 				</div>
@@ -50,6 +50,7 @@
 				<th>Date</th>
 				<th>Updated By</th>
 				<th>Remarks</th>
+				<th>Update</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -59,6 +60,7 @@
 				<td class="large">{{ history.historydate.strftime("%Y-%m-%d") }}</td>
 				<td class="large">{{ history.updatedby }}</td>
 				<td class="large">{{ history.remarks }}</td>
+				<td class="large">{{ history.update }}</td>
 			</tr>
 			{% endfor %}
 		</tbody>

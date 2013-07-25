@@ -64,7 +64,7 @@
 			<!-- code here -->
 			{% for reminder in reminders %}
 			<tr>
-				<td class="large">{{ reminder.key().id_or_name() }}</td>
+				<td class="large"><a href="/reminders/{{ reminder.key().id_or_name() }}">{{ reminder.key().id_or_name() }}</a></td>
 				<td class="large">{{ reminder.description }}</td>
 				<td class="large">{{ reminder.lastdismissed.strftime("%d %B %Y") }}</td>
 				<td class="large">{{ reminder.lastupdated.strftime("%d %B %Y") }}</td>

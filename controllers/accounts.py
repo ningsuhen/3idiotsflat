@@ -24,7 +24,7 @@ class AccountsPage(webapp2.RequestHandler):
     def accounts_page(self):
         user = users.get_current_user()
 
-        if user and user.email() in ACTIVE_USER_EMAILS:
+        if user and (user.email() in ACTIVE_USER_EMAILS or users.is_current_user_admin()):
             reloadPage = False
             simpleText = False
             usedby = {}
