@@ -1,5 +1,4 @@
 from google.appengine.ext import db
-import logging
 
 class Accounts(db.Model):
     expensedate = db.DateTimeProperty(auto_now_add=True)
@@ -25,7 +24,6 @@ class Accounts(db.Model):
             for contribution in self.contributions:
                 if(contribution.contributor != None):
                     self.contribution_map[contribution.contributor.email()] = contribution.amount
-                logging.info(contribution.contributor)
         if(not email in self.contribution_map):
             return 0
         else:

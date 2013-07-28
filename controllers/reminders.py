@@ -2,7 +2,6 @@ import webapp2
 from settings import ACTIVE_USER_EMAILS, JINJA_ENVIRONMENT, ACTIVE_USERS
 from google.appengine.api import users
 from models.reminders import Reminders, ReminderHistory
-import logging
 import datetime
 class ReminderPage(webapp2.RequestHandler):
     def get(self, name=None):
@@ -28,7 +27,6 @@ class ReminderPage(webapp2.RequestHandler):
                 # individual reminder
                 
                 reminder = Reminders.get_or_insert(key_name=name)
-                logging.info(reminder)
                 template_values = {
                                    'page':{'title':reminder.description},
                                    'user':user,
@@ -56,13 +54,11 @@ class ReminderPage(webapp2.RequestHandler):
                     self.response.write("Title cannot be empty or None")
                     return
                 # TODO: allow selective reminders
-#                 logging.info(self.request.get("targetusers[]"))
                 existing_reminder = Reminders.get_by_key_name(title)
                 if(existing_reminder == None):
                     reminder = Reminders(key_name=title)
                     reminder.description = self.request.get("description")
                     reminder.put()
-                    logging.info(reminder)
                     self.redirect("/reminders/" + title)
                 else:
                     self.response.write("Key Already Exists")

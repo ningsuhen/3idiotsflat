@@ -6,7 +6,6 @@ Created on Mar 15, 2013
 import webapp2
 from google.appengine.api import urlfetch, mail, users
 from models.reminders import Reminders
-import logging
 from settings import JINJA_EMAIL_ENVIRONMENT, ACTIVE_USER_EMAILS
 import datetime
 import re
@@ -16,7 +15,6 @@ urlfetch.set_default_fetch_deadline(60)
 class ProcessReminders(webapp2.RequestHandler):
     def get(self):
         reminders = Reminders.gql("WHERE lastdismissed < :1", datetime.datetime.today().replace(day=1, hour=0, minute=0, second=0, microsecond=0)).fetch(50)
-        logging.info(reminders)
         mail_html = ""
         email_outputs = ""
         if(not reminders == None):
@@ -44,7 +42,6 @@ class ProcessReminders(webapp2.RequestHandler):
                 }
                 mail_html = template.render(template_values)
                 text_email_body = re.sub(r'<[^>]*?>', '', email_body)
-                logging.info(mail_html)
                 # #TODO: change email address
                 mail.send_mail(sender="3 Idiots Flat <neomysites@gmail.com>",
                 to=",".join(ACTIVE_USER_EMAILS),

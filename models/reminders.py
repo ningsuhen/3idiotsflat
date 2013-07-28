@@ -1,6 +1,5 @@
 from google.appengine.ext import db
-import logging
-from google.appengine.api import users
+
 
 class Reminders(db.Model):
     description = db.StringProperty()

@@ -142,18 +142,15 @@ class AccountsPage(webapp2.RequestHandler):
             if (total_amount > 0):
                 user_adjustment = user_amount_map.copy()
                 asc_adjustment_keys = get_sorted_keys(user_adjustment)
-                logging.info("asc_adjustment_keys: %s" % (asc_adjustment_keys))
                 desc_amount_keys = get_sorted_keys(user_amount_map, True)
                 minUser = asc_adjustment_keys[0]
                 
                 for mapuser in desc_amount_keys:
-                    logging.info("user_adjust_ment: %s" % (user_adjustment))
                     if(user_adjustment[minUser] < 0 and not user_adjustment[mapuser] == 0 and mapuser != minUser):
                         # calcualte amount to pay
                         payamount = user_adjustment[mapuser]
                         user_adjustment[minUser] += payamount
                         user_adjustment[mapuser] = 0
-                        logging.info("user_adjust_ment: %s" % (user_adjustment))
                         paymentMap[mapuser] = [minUser, payamount]
                     elif int(user_adjustment[mapuser]) > 0:
                         logging.error("calculation error: " + str(user_adjustment[mapuser]) + " " + mapuser + "" + minUser)
