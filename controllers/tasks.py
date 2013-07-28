@@ -7,7 +7,7 @@ import webapp2
 from google.appengine.api import urlfetch, mail, users
 from models.reminders import Reminders
 import logging
-from settings import JINJA_EMAIL_ENVIRONMENT
+from settings import JINJA_EMAIL_ENVIRONMENT, ACTIVE_USER_EMAILS
 import datetime
 import re
 
@@ -47,8 +47,8 @@ class ProcessReminders(webapp2.RequestHandler):
                 logging.info(mail_html)
                 # #TODO: change email address
                 mail.send_mail(sender="3 Idiots Flat <neomysites@gmail.com>",
-                # to=",".join(ACTIVE_USER_EMAILS),
-                to="ningsuhen@gmail.com",
+                to=",".join(ACTIVE_USER_EMAILS),
+                #to="ningsuhen@gmail.com",
                 subject="Rent Payment Reminder",
                 body=text_email_body,
                 html=mail_html)
