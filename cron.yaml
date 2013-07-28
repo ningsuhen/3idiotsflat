@@ -2,6 +2,10 @@ cron:
 - description: Process Reminders
   url: /tasks/process_reminders
   schedule: every day 10:00
+- description: Daily Backup
+  url: /_ah/datastore_admin/backup.create?name=BackupToBlobStore&kind=Accounts&kind=Contribution&kind=Reminders&kind=ReminderHistory&filesystem=blobstore
+  schedule: every 24 hours
+  target: ah-builtin-python-bundle
 #- description: Invalidate Expired Users
 #  url: /tasks/invalidate_expired_users
 #  schedule: every day 00:00
