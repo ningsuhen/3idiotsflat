@@ -6,7 +6,7 @@ Created on Mar 15, 2013
 import webapp2
 from google.appengine.api import urlfetch, mail, users
 from models.reminders import Reminders
-from settings import JINJA_EMAIL_ENVIRONMENT, ACTIVE_USER_EMAILS
+from settings import JINJA_EMAIL_ENVIRONMENT, ACTIVE_USER_EMAILS, SENDER_EMAIL
 import datetime
 import re
 
@@ -43,7 +43,7 @@ class ProcessReminders(webapp2.RequestHandler):
                 mail_html = template.render(template_values)
                 text_email_body = re.sub(r'<[^>]*?>', '', email_body)
                 # #TODO: change email address
-                mail.send_mail(sender="3 Idiots Flat <neomysites@gmail.com>",
+                mail.send_mail(sender=SENDER_EMAIL,
                 to=",".join(ACTIVE_USER_EMAILS),
                 #to="ningsuhen@gmail.com",
                 subject="Rent Payment Reminder",
