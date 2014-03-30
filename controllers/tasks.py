@@ -45,7 +45,6 @@ class ProcessReminders(webapp2.RequestHandler):
                 # #TODO: change email address
                 mail.send_mail(sender=SENDER_EMAIL,
                 to=",".join(ACTIVE_USER_EMAILS),
-                #to="ningsuhen@gmail.com",
                 subject="Rent Payment Reminder",
                 body=text_email_body,
                 html=mail_html)
